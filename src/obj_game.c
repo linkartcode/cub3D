@@ -6,59 +6,49 @@
 /*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 21:19:48 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/14 13:41:34 by nmordeka         ###   ########.fr       */
+/*   Updated: 2022/09/15 08:18:50 by nmordeka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	game_exit(t_game *game, char *err_mess, int code, int fd)
+void	game_destroy(t_game **game)
 {
-	if (game)
-	{
-		if (game->map)
-			free_map(game);
-		if (game->decor)
-			free_decor(game->decor, game->mlx);
-		if (game->buffer)
-			free_buffer(game->buffer, game->mlx);
-		if (game->dda)
-			free(game->dda);
-		if (game->camera)
-			free(game->camera);
-		if (game->win)
-			mlx_destroy_window(game->mlx, game->win);
-		if (game->mlx)
-			free(game->mlx);
-		if (game->win)
-			free(game->win);
-		free(game);
-	}	
-	if (fd > 0)
-		close (fd);
-	if (err_mess)
-		ft_putendl_fd(err_mess, 1);
-	exit(code);
+	if (!(*game))
+		return ;
+	map_destroy(&(*game)->map_obj);
+	decor_destroy(&(*game)->decor, (*game)->mlx);
+	buffer_destroy(&(*game)->buffer, (*game)->mlx);
+	if ((*game)->dda)
+		free((*game)->dda);
+	if ((*game)->camera)
+		free((*game)->camera);
+	if ((*game)->win)
+		mlx_destroy_window((*game)->mlx, (*game)->win);
+	if ((*game)->mlx)
+		free((*game)->mlx);
+	free(*game);
 }
 
-t_game	*create_game(void)
+int	create_game(t_game *game)
 {
-	t_game	*game;
-
-	game = malloc(sizeof(t_game));
-	if (!game)
-		return (NULL);
 	game->dda = malloc(sizeof(t_dda));
-	if (!(*game).dda)
-		return (NULL);
+	if (!(game->dda))
+		return (FT_FALSE);
 	game->decor = init_decor();
-	if (!(*game).decor)
-		return (NULL);
-	game->camera = NULL;
+	if (!(game->decor))
+		return (FT_FALSE);
+	game->map_obj = malloc(sizeof(t_map));
+	if (!(game->map_obj))
+		return (FT_FALSE);
+	game->camera = malloc(sizeof(t_camera));
+	if (!(game->camera))
+		return (FT_FALSE);
+	game->map_obj->map = NULL;
 	game->buffer = NULL;
 	game->win = NULL;
-	game->map = NULL;
-	return (game);
+	game->mlx = NULL;
+	return (FT_TRUE);
 }
 
 void	game_print(t_game *game)
@@ -77,41 +67,36 @@ void	game_print(t_game *game)
 	ft_putnbr_fd(game->decor->floor, 1);
 	ft_putendl_fd("\nMap.", 1);
 	ft_putstr_fd("width = ", 1);
-	ft_putnbr_fd(game->width, 1);
+	ft_putnbr_fd(game->map_obj->width, 1);
 	ft_putstr_fd(" , height = ", 1);
-	ft_putnbr_fd(game->height, 1);
+	ft_putnbr_fd(game->map_obj->height, 1);
 	ft_putchar_fd('\n', 1);
 	i = -1;
-	while (++i < game->height)
-		ft_putendl_fd(game->map[i], 1);
+	while (++i < game->map_obj->height)
+		ft_putendl_fd(game->map_obj->map[i], 1);
 }
 
-t_game	*game_init(int fd)
+void	game_init(t_game *game, int fd)
 {
-	t_game	*game;
-
-	game = create_game();
-	if (!game)
-		game_exit(game, "No enought mamory for game!", 4, fd);
+	if (!create_game(game))
+		game_over(game, "No enought mamory for game!", 4, fd);
 	game->mlx = mlx_init();
 	if (!game->mlx)
-		game_exit(game, "Can't init MLX lib", 5, fd);
+		game_over(game, "Can't init MLX lib", 5, fd);
 	game->buffer = init_buf(game->mlx, WIN_W, WIN_H, NULL);
 	if (!game->buffer)
-		game_exit(game, "Can't create screen buffer", 6, fd);
-	
+		game_over(game, "Can't create screen buffer", 6, fd);
 	game->win = mlx_new_window(game->mlx, WIN_W, WIN_H, "cub3D");
 	if (!game->win)
-		game_exit(game, "Can't init graphical window", 7, 0);
+		game_over(game, "Can't init graphical window", 7, fd);
 	if (!read_decor(game->decor, fd, game->mlx))
-		game_exit(game, "Invalid textures or colors in map", 8, fd);
-	read_map(game, fd);
-	if (!game->map)
-		game_exit(game, "No enought mamory for map!", 9, fd);
+		game_over(game, "Invalid textures or colors in map", 8, fd);
+	if (!map_create(game->map_obj, fd))
+		game_over(game, "No enought mamory for map!", 9, fd);
 	close (fd);
-	read_start_pos(game);
-	if (!check_map(game))
-		game_exit(game, NULL, 10, 0);
+	if (!camera_create(game))
+		game_over(game, "Start position error", 10, 0);
+	if (!check_map(game->map_obj))
+		game_over(game, NULL, 11, 0);
 	game_print(game);
-	return (game);
 }

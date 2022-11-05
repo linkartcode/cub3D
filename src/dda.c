@@ -71,14 +71,14 @@ void	setup_dda(int x, t_dda *dda, t_camera *cam)
 	set_steps(dda, cam);
 }
 
-void	exec_dda(t_dda *dda, t_game *game)
+void	exec_dda(t_dda *dda, t_map *map)
 {
 	int		hit;
 	char	ch;
 
 	hit = 0;
 	while ((hit == 0) && (dda->map_x >= 0) && (dda->map_y >= 0) && \
-		(dda->map_x < game->width) && (dda->map_y < game->height))
+		(dda->map_x < map->width) && (dda->map_y < map->height))
 	{
 		if (dda->side_distx < dda->side_disty)
 		{
@@ -92,7 +92,7 @@ void	exec_dda(t_dda *dda, t_game *game)
 			dda->map_y += dda->step_y;
 			dda->side = 1;
 		}
-		ch = game->map[dda->map_y][dda->map_x];
+		ch = map->map[dda->map_y][dda->map_x];
 		if (ch != SYM_EMPTY)
 			hit = 1;
 	}
@@ -106,7 +106,7 @@ void	print_line(int x, t_game *game)
 
 	dda = game->dda;
 	setup_dda(x, dda, game->camera);
-	exec_dda(dda, game);
+	exec_dda(dda, game->map_obj);
 	if (dda->side == 0)
 		dda->dist_perpw = (dda->side_distx - dda->delta_distx);
 	else

@@ -58,3 +58,14 @@ void	free_decor(t_decor *decor, void *mlx)
 	free_buffer(decor->west, mlx);
 	free (decor);
 }
+
+void	decor_destroy(t_decor **decor, void *mlx)
+{
+	if (!(*decor))
+		return ;
+	buffer_destroy(&(*decor)->south, mlx);
+	buffer_destroy(&(*decor)->north, mlx);
+	buffer_destroy(&(*decor)->west, mlx);
+	buffer_destroy(&(*decor)->east, mlx);
+	free (*decor);
+}

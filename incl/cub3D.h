@@ -113,6 +113,13 @@ typedef struct s_dda
 	double	tex_pos;
 }	t_dda;
 
+typedef struct s_map
+{
+	int			width;
+	int			height;
+	char		**map;
+}	t_map;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -121,29 +128,33 @@ typedef struct s_game
 	t_buffer	*buffer;
 	t_dda		*dda;
 	t_decor		*decor;
-	int			width;
-	int			height;
-	char		**map;
+	t_map		*map_obj;
 }	t_game;
+
+void			game_over(t_game *game, char *err_mess, int code, int fd);
 
 t_decor			*init_decor(void);
 void			fill_decor(char *str, t_decor *decor, void *mlx);
 void			free_decor(t_decor *decor, void *mlx);
 int				read_decor(t_decor *decor, int fd, void *mlx);
+void			decor_destroy(t_decor **decor, void *mlx);
 
 void			read_start_pos(t_game *game);
+int				camera_create(t_game *game);
 void			read_map(t_game *game, int fd);
-int				check_map(t_game *game);
-void			free_map(t_game *game);
+int				map_create(t_map *map, int fd);
+int				check_map(t_map *map);
+void			map_destroy(t_map **map);
 
-t_game			*game_init(int fd);
-void			game_exit(t_game *game, char *err_mess, int code, int fd);
+void			game_destroy(t_game **game);
+void			game_init(t_game *game, int fd);
 int				player_move(int key, t_game *game);
 
 unsigned int	buf_get_pixel(t_buffer *buff, int x, int y);
 void			buf_put_pixel(t_buffer *buffer, int x, int y, int color);
 t_buffer		*init_buf(void *mlx, int width, int height, char *path);
 void			free_buffer(t_buffer *buffer, void *mlx);
+void			buffer_destroy(t_buffer **buffer, void *mlx);
 
 void			draw_vert_tex(int x, int length, t_buffer *text, t_game *game);
 

@@ -39,31 +39,46 @@ char	*skip_empty(int fd)
 	return (str);
 }
 
-void	fill_map(t_game *game)
+void	map_destroy(t_map **map)
+{
+	int	y;
+	int	y_max;
+
+	if (!(*map))
+		return ;
+	y = -1;
+	y_max = (*map)->height;
+	while (++y < y_max)
+		free((*map)->map[y]);
+	free((*map));
+}
+
+int	map_fill(t_map *map)
 {
 	char	*str;
 	int		h;
 
-	if (!game->map)
-		return ;
-	game->width--;
+	if (!map)
+		return (FT_FALSE);
+	map->width--;
 	h = -1;
-	while (game->map[++h])
+	while (map->map[++h])
 	{
-		if ((int)ft_strlen(game->map[h]) < game->width)
+		if ((int)ft_strlen(map->map[h]) < map->width)
 		{
-			str = malloc(game->width + 1);
-			ft_memset(str, SYM_SPACE, game->width);
-			ft_memcpy(str, game->map[h], ft_strlen(game->map[h]));
-			str[game->width] = '\0';
-			free(game->map[h]);
-			game->map[h] = str;
+			str = malloc(map->width + 1);
+			ft_memset(str, SYM_SPACE, map->width);
+			ft_memcpy(str, map->map[h], ft_strlen(map->map[h]));
+			str[map->width] = '\0';
+			free(map->map[h]);
+			map->map[h] = str;
 		}
 	}
-	game->height = h;
+	map->height = h;
+	return (FT_TRUE);
 }
 
-void	read_map(t_game *game, int fd)
+int	map_create(t_map *map, int fd)
 {
 	char	*str;
 	char	*new_str;
@@ -71,13 +86,13 @@ void	read_map(t_game *game, int fd)
 
 	str = skip_empty(fd);
 	if (!str)
-		return ;
-	game->width = ft_strlen(str);
+		return (FT_FALSE);
+	map->width = ft_strlen(str);
 	new_str = get_next_line(fd);
 	while (new_str && !str_empty(new_str))
 	{
-		if ((int)ft_strlen(new_str) > game->width)
-			game->width = ft_strlen(new_str);
+		if ((int)ft_strlen(new_str) > map->width)
+			map->width = ft_strlen(new_str);
 		tmp_str = ft_strjoin(str, new_str);
 		free(new_str);
 		free(str);
@@ -85,22 +100,9 @@ void	read_map(t_game *game, int fd)
 		new_str = get_next_line(fd);
 	}
 	if (!new_str)
-		game->map = ft_split(str, '\n');
+		map->map = ft_split(str, '\n');
 	else
 		free(new_str);
 	free(str);
-	fill_map(game);
-}
-
-void	free_map(t_game *game)
-{
-	int	y;
-
-	if (game->map)
-	{
-		y = -1;
-		while (++y < game->height)
-			free(game->map[y]);
-		free(game->map);
-	}
+	return (map_fill(map));
 }

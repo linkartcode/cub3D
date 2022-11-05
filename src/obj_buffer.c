@@ -65,3 +65,12 @@ void	free_buffer(t_buffer *buffer, void *mlx)
 		mlx_destroy_image(mlx, buffer->data);
 	free(buffer);
 }
+
+void	buffer_destroy(t_buffer **buffer, void *mlx)
+{
+	if (!(*buffer))
+		return ;
+	if ((*buffer)->data)
+		mlx_destroy_image(mlx, (*buffer)->data);
+	free(*buffer);
+}

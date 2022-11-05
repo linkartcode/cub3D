@@ -39,7 +39,7 @@ $(LIBFT_PATH)/$(LIBFT) : force
 force : ;
 #
 $(filter %.o,$(OBJ)): %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(INCL_PATH) -I $(LIBFT_PATH) -I
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(INCL_PATH) -I $(LIBFT_PATH)
 #
 bonus : $(NAME_B)
 #

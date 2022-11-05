@@ -42,7 +42,7 @@ RM 	=	rm -f
 #
 all	:		$(NAME)
 #
-$(NAME)	:	$(OBJ) $(HEADER)
+$(NAME)	:	$(OBJ)
 	ar rcs $(NAME) $?
 #
 %.o 	: 	%.c $(HEADER)

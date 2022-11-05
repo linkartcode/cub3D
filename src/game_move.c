@@ -34,11 +34,11 @@ static void	move(t_game *game, double dir_x, double dir_y, double speed)
 	cam = game->camera;
 	new_x = (int)(cam->pos_x + dir_x * speed);
 	new_y = (int)(cam->pos_y + dir_y * speed);
-	if (new_x < game->width && new_x >= 0 \
-		&& game->map[(int)(cam->pos_y)][new_x] == '0')
+	if (new_x < game->map_obj->width && new_x >= 0 \
+		&& game->map_obj->map[(int)(cam->pos_y)][new_x] == '0')
 		cam->pos_x += dir_x * speed;
-	if (new_y < game->height && new_y >= 0 \
-		&& game->map[new_y][(int)(cam->pos_x)] == '0')
+	if (new_y < game->map_obj->height && new_y >= 0 \
+		&& game->map_obj->map[new_y][(int)(cam->pos_x)] == '0')
 		cam->pos_y += dir_y * speed;
 }
 

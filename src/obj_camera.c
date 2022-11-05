@@ -12,24 +12,6 @@
 
 #include "cub3D.h"
 
-static t_camera	*create_camera(int x, int y)
-{
-	t_camera	*camera;
-
-	camera = malloc(sizeof(t_camera));
-	if (camera)
-	{
-		camera->pos_x = (double) x;
-		camera->pos_y = (double) y;
-		camera->dir_x = 0;
-		camera->dir_y = 0;
-		camera->plane_x = 0;
-		camera->plane_y = 0;
-		camera->angle_view = ANGLE;
-	}
-	return (camera);
-}
-
 static void	set_angle(t_camera *cam, char view)
 {
 	if (view == 'N')
@@ -54,38 +36,40 @@ static void	set_angle(t_camera *cam, char view)
 	}
 }
 
-static t_camera	*camera_init(int x, int y, char view)
+static void	camera_init(t_camera *camera, int x, int y, char view)
 {
-	t_camera	*res;
-
-	res = create_camera(x, y);
-	if (res)
-		set_angle(res, view);
-	return (res);
+	camera->pos_x = (double) x;
+	camera->pos_y = (double) y;
+	camera->dir_x = 0;
+	camera->dir_y = 0;
+	camera->plane_x = 0;
+	camera->plane_y = 0;
+	camera->angle_view = ANGLE;
+	set_angle(camera, view);
 }
 
-void	read_start_pos(t_game *game)
+int	camera_create(t_game *game)
 {
 	int		x;
 	int		y;
 	char	ch;
 
-	if (!game->map)
-		return ;
+	if (!game->map_obj)
+		return (FT_FALSE);
 	y = -1;
-	while (++y < game->height)
+	while (++y < game->map_obj->height)
 	{
 		x = -1;
-		while (++x < game->width)
+		while (++x < game->map_obj->width)
 		{
-			ch = game->map[y][x];
+			ch = game->map_obj->map[y][x];
 			if (ch == 'W' || ch == 'E' || ch == 'S' || ch == 'N')
 			{
-				game->camera = camera_init(x, y, ch);
-				if (game->camera)
-					game->map[y][x] = SYM_EMPTY;
-				return ;
+				game->map_obj->map[y][x] = SYM_EMPTY;
+				camera_init(game->camera, x, y, ch);
+				return (FT_TRUE);
 			}
 		}
 	}
+	return (FT_FALSE);
 }
