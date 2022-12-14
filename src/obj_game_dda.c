@@ -12,7 +12,7 @@
 
 #include "cub3D.h"
 
-char	get_hit_view(int side, int step_x, int step_y)
+static char	get_hit_view(int side, int step_x, int step_y)
 {
 	if (side)
 	{
@@ -27,7 +27,7 @@ char	get_hit_view(int side, int step_x, int step_y)
 		return ('E');
 }
 
-void	set_steps(t_dda *dda, t_camera *cam)
+static void	set_steps(t_dda *dda, t_camera *cam)
 {
 	if (dda->ray_dirx < 0)
 	{
@@ -51,7 +51,7 @@ void	set_steps(t_dda *dda, t_camera *cam)
 	}
 }
 
-void	setup_dda(int x, t_dda *dda, t_camera *cam)
+static void	setup_dda(int x, t_dda *dda, t_camera *cam)
 {
 	double	cam_x;
 
@@ -71,7 +71,7 @@ void	setup_dda(int x, t_dda *dda, t_camera *cam)
 	set_steps(dda, cam);
 }
 
-void	exec_dda(t_dda *dda, t_map *map)
+static void	exec_dda(t_dda *dda, t_map *map)
 {
 	int		hit;
 	char	ch;
@@ -98,7 +98,7 @@ void	exec_dda(t_dda *dda, t_map *map)
 	}
 }
 
-void	print_line(int x, t_game *game)
+void	game_draw_line(int x, t_game *game)
 {
 	char	view;
 	int		line_height;

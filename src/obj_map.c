@@ -12,7 +12,7 @@
 
 #include "cub3D.h"
 
-int	str_empty(char *str)
+static int	str_empty(char *str)
 {
 	size_t	i;
 
@@ -24,7 +24,7 @@ int	str_empty(char *str)
 	return (FT_FALSE);
 }
 
-char	*skip_empty(int fd)
+static char	*skip_empty(int fd)
 {
 	char	*str;
 
@@ -39,21 +39,7 @@ char	*skip_empty(int fd)
 	return (str);
 }
 
-void	map_destroy(t_map **map)
-{
-	int	y;
-	int	y_max;
-
-	if (!(*map))
-		return ;
-	y = -1;
-	y_max = (*map)->height;
-	while (++y < y_max)
-		free((*map)->map[y]);
-	free((*map));
-}
-
-int	map_fill(t_map *map)
+static int	map_fill(t_map *map)
 {
 	char	*str;
 	int		h;
@@ -105,4 +91,18 @@ int	map_create(t_map *map, int fd)
 		free(new_str);
 	free(str);
 	return (map_fill(map));
+}
+
+void	map_destroy(t_map **map)
+{
+	int	y;
+	int	y_max;
+
+	if (!(*map))
+		return ;
+	y = -1;
+	y_max = (*map)->height;
+	while (++y < y_max)
+		free((*map)->map[y]);
+	free((*map));
 }

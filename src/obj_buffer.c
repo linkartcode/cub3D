@@ -28,7 +28,7 @@ static int	check_path(char *path)
 	return (i);
 }
 
-t_buffer	*init_buf(void *mlx, int width, int height, char *path)
+t_buffer	*buffer_init(void *mlx, int width, int height, char *path)
 {
 	t_buffer	*res;
 	int			i;
@@ -55,15 +55,6 @@ t_buffer	*init_buf(void *mlx, int width, int height, char *path)
 	res->addr = mlx_get_data_addr(res->data, &res->bits_per_pixel, \
 			&res->size_line, &res->endian);
 	return (res);
-}
-
-void	free_buffer(t_buffer *buffer, void *mlx)
-{
-	if (!buffer)
-		return ;
-	if (buffer->data)
-		mlx_destroy_image(mlx, buffer->data);
-	free(buffer);
 }
 
 void	buffer_destroy(t_buffer **buffer, void *mlx)

@@ -81,7 +81,7 @@ static int	check_closed(t_map *map)
 	return (FT_TRUE);
 }
 
-int	check_map(t_map *map)
+int	map_check(t_map *map)
 {
 	int	height;
 

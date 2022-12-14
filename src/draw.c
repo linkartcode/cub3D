@@ -12,7 +12,26 @@
 
 #include "cub3D.h"
 
-void	set_dda_tex(t_game *game, t_buffer *tex)
+static unsigned int	buf_get_pixel(t_buffer *buff, int x, int y)
+{
+	unsigned int	color;
+	char			*dest;
+
+	dest = buff->addr + (y * buff->size_line + x * (buff->bits_per_pixel / 8));
+	color = *(unsigned int *) dest;
+	return (color);
+}
+
+void	put_pixel(t_buffer *buffer, int x, int y, int color)
+{
+	char	*dest;
+
+	dest = buffer->addr + (y * buffer->size_line + x * \
+		(buffer->bits_per_pixel / 8));
+	*(unsigned int *) dest = color;
+}
+
+static void	set_dda_tex(t_game *game, t_buffer *tex)
 {
 	t_dda	*dda;
 	double	wallx;
@@ -30,7 +49,7 @@ void	set_dda_tex(t_game *game, t_buffer *tex)
 		dda->texx = tex->w - dda->texx - 1;
 }
 
-void	draw_vert_tex(int x, int length, t_buffer *tex, t_game *game)
+static void	draw_vert_tex(int x, int length, t_buffer *tex, t_game *game)
 {
 	int				start;
 	int				end;
@@ -52,7 +71,7 @@ void	draw_vert_tex(int x, int length, t_buffer *tex, t_game *game)
 		game->dda->texy = (int) game->dda->tex_pos & (tex->h - 1);
 		game->dda->tex_pos += game->dda->step;
 		color = buf_get_pixel(tex, game->dda->texx, game->dda->texy);
-		buf_put_pixel(game->buffer, x, y, color);
+		put_pixel(game->buffer, x, y, color);
 	}
 }
 

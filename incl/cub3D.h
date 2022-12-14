@@ -19,39 +19,50 @@
 # include <stdio.h>
 # include <math.h>
 
+//Symbols for start position on map
+//difines player's face direction 
 # define SYM_WEST		'W'
 # define SYM_EAST		'E'
 # define SYM_SOUTH		'S'
 # define SYM_NORTH		'N'
+
+// Defines symbols of map
 # define SYM_WALL		'1'
 # define SYM_EMPTY		'0'
 # define SYM_SPACE		' '
 
+// keyboard definitions
+// keys for moves
 # define KEY_UP			13
 # define KEY_DOWN		1
 # define KEY_LEFT		0
 # define KEY_RIGHT		2
-
+// keys for turns to left / right
 # define KEY_LVIEW		123
 # define KEY_RVIEW		124
-
+// key for exit
 # define KEY_ESC		53
 
+// resolution of window
 # define WIN_W			1024
 # define WIN_H			768
 
+// defines for calculation of moving 
 # define ANGLE			0.66
 # define ANG			1.5708
-
 # define MOVE_SPEED		0.15
 # define ROT_SPEED		0.06
 
+// defines types
+
+// just simple int position
 typedef struct s_point
 {
 	int	x;
 	int	y;
 }	t_point;
 
+// simple int rectangle
 typedef struct s_rect
 {
 	t_point	base;
@@ -59,6 +70,7 @@ typedef struct s_rect
 	int		h;
 }	t_rect;
 
+// buffer struct for sprite output 
 typedef struct s_buffer
 {
 	void	*data;
@@ -70,6 +82,9 @@ typedef struct s_buffer
 	int		endian;
 }	t_buffer;
 
+// struct contains textures for wall 
+// different for south, north... ect.
+// colors for ceiling and floor
 typedef struct s_decor
 {
 	t_buffer	*south;
@@ -82,6 +97,7 @@ typedef struct s_decor
 	int			set_floor;
 }	t_decor;
 
+// struct for view calculations
 typedef struct s_camera
 {
 	double	angle_view;
@@ -93,6 +109,7 @@ typedef struct s_camera
 	double	plane_y;
 }	t_camera;
 
+// struct provides algoritm of dda
 typedef struct s_dda
 {
 	int		map_x;
@@ -113,6 +130,7 @@ typedef struct s_dda
 	double	tex_pos;
 }	t_dda;
 
+// just map
 typedef struct s_map
 {
 	int			width;
@@ -120,6 +138,7 @@ typedef struct s_map
 	char		**map;
 }	t_map;
 
+// main sruct contains almoust all previous
 typedef struct s_game
 {
 	void		*mlx;
@@ -131,38 +150,32 @@ typedef struct s_game
 	t_map		*map_obj;
 }	t_game;
 
-void			game_over(t_game *game, char *err_mess, int code, int fd);
 
-t_decor			*init_decor(void);
-void			fill_decor(char *str, t_decor *decor, void *mlx);
-void			free_decor(t_decor *decor, void *mlx);
-int				read_decor(t_decor *decor, int fd, void *mlx);
+// defines functions
+
+void			game_reset(t_game *game);
+void			game_init(t_game *game, int fd);
+int				game_move(int key, t_game *game);
+void			game_draw_line(int x, t_game *game);
+int				game_draw(t_game *game);
+void			game_over(t_game *game, char *err_mess, int code, int fd);
+void			game_destroy(t_game **game);
+
+t_decor			*decor_init(void);
+void			decor_fill(char *str, t_decor *decor, void *mlx);
+int				decor_read(t_decor *decor, int fd, void *mlx);
 void			decor_destroy(t_decor **decor, void *mlx);
 
-void			read_start_pos(t_game *game);
 int				camera_create(t_game *game);
-void			read_map(t_game *game, int fd);
+
 int				map_create(t_map *map, int fd);
-int				check_map(t_map *map);
+int				map_check(t_map *map);
 void			map_destroy(t_map **map);
 
-void			game_destroy(t_game **game);
-void			game_init(t_game *game, int fd);
-int				player_move(int key, t_game *game);
-
-unsigned int	buf_get_pixel(t_buffer *buff, int x, int y);
-void			buf_put_pixel(t_buffer *buffer, int x, int y, int color);
-t_buffer		*init_buf(void *mlx, int width, int height, char *path);
-void			free_buffer(t_buffer *buffer, void *mlx);
+t_buffer		*buffer_init(void *mlx, int width, int height, char *path);
 void			buffer_destroy(t_buffer **buffer, void *mlx);
 
-void			draw_vert_tex(int x, int length, t_buffer *text, t_game *game);
-
+void			put_pixel(t_buffer *buffer, int x, int y, int color);
 void			draw_line(int x, int length, char view, t_game *game);
-int				draw_buffer(t_game	*game);
-
-void			print_line(int x, t_game *game);
-
-int				str_empty(char *str);
 
 #endif

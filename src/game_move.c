@@ -42,7 +42,7 @@ static void	move(t_game *game, double dir_x, double dir_y, double speed)
 		cam->pos_y += dir_y * speed;
 }
 
-int	player_move(int key, t_game *game)
+int	game_move(int key, t_game *game)
 {
 	t_camera	*cam;
 

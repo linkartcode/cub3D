@@ -72,16 +72,16 @@ static int	ft_pars_color(char type, char *str, t_decor *decor)
 static void	fill_texture(char type, char *str, t_decor *decor, void *mlx)
 {
 	if (type == 'S' && !(decor->south))
-		decor->south = init_buf(mlx, 0, 0, str);
+		decor->south = buffer_init(mlx, 0, 0, str);
 	else if (type == 'N' && !(decor->north))
-		decor->north = init_buf(mlx, 0, 0, str);
+		decor->north = buffer_init(mlx, 0, 0, str);
 	else if (type == 'E' && !(decor->east))
-		decor->east = init_buf(mlx, 0, 0, str);
+		decor->east = buffer_init(mlx, 0, 0, str);
 	else if (type == 'W' && !(decor->west))
-		decor->west = init_buf(mlx, 0, 0, str);
+		decor->west = buffer_init(mlx, 0, 0, str);
 }
 
-void	fill_decor(char *str, t_decor *decor, void *mlx)
+void	decor_fill(char *str, t_decor *decor, void *mlx)
 {
 	int		i;
 

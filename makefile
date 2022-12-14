@@ -7,11 +7,11 @@ SRC_PATH	= ./src
 INCL_PATH	= ./incl
 # SRCS
 SRCS		= 	$(SRC_PATH)/main.c		 $(SRC_PATH)/obj_game.c \
-				$(SRC_PATH)/game_move.c  $(SRC_PATH)/game_draw.c	\
+				$(SRC_PATH)/game_move.c  $(SRC_PATH)/draw.c	\
 				$(SRC_PATH)/obj_decor.c	 $(SRC_PATH)/obj_decor_read.c \
-				$(SRC_PATH)/obj_buffer.c $(SRC_PATH)/obj_buffer_draw.c \
+				$(SRC_PATH)/obj_buffer.c $(SRC_PATH)/obj_game_draw.c \
 				$(SRC_PATH)/obj_map.c	 $(SRC_PATH)/obj_map_check.c \
-				$(SRC_PATH)/obj_camera.c $(SRC_PATH)/dda.c
+				$(SRC_PATH)/obj_camera.c $(SRC_PATH)/obj_game_dda.c
 				
 SRCS_B		=	
 # HEADERS

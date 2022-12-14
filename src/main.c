@@ -39,18 +39,18 @@ static int	not_cub_ext(char *filename)
 }
 
 // handle keyboard input
-int	key_hook(int key, t_game *game)
+static int	key_hook(int key, t_game *game)
 {
 	if (key == KEY_ESC)
 		game_over(game, "ESC Exit", 0, 0);
 	if (key == KEY_DOWN || key == KEY_UP || key == KEY_LEFT || key == KEY_RIGHT
 		|| key == KEY_LVIEW || key == KEY_RVIEW)
-		player_move(key, game);
+		game_move(key, game);
 	return (0);
 }
 
 // handle close window event
-int	close_win_hook(t_game *game)
+static int	close_win_hook(t_game *game)
 {
 	game_over(game, "Close window exit", 0, 0);
 	return (0);
@@ -64,6 +64,7 @@ int	main(int argc, char **argv)
 	game = malloc(sizeof(t_game));
 	if (!game)
 		game_over(game, "Memory allocation error", 99, 0);
+	game_reset(game);
 	if (argc != 2)
 		game_over(game, "Program needs one parameter with cub ext", 1, 0);
 	if (not_cub_ext(argv[1]))
@@ -75,7 +76,7 @@ int	main(int argc, char **argv)
 	ft_putendl_fd("File OK", 1);
 	mlx_hook(game->win, 17, 0, close_win_hook, game);
 	mlx_key_hook(game->win, key_hook, game);
-	mlx_loop_hook(game->mlx, draw_buffer, game);
+	mlx_loop_hook(game->mlx, game_draw, game);
 	mlx_loop(game->mlx);
 	game_over(game, "Normal", 0, fd);
 	return (0);

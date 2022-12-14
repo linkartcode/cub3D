@@ -12,7 +12,7 @@
 
 #include "cub3D.h"
 
-t_decor	*init_decor(void)
+t_decor	*decor_init(void)
 {
 	t_decor	*decor;
 
@@ -29,15 +29,14 @@ t_decor	*init_decor(void)
 	return (decor);
 }
 
-int	read_decor(t_decor *dec, int fd, void *mlx)
+int	decor_read(t_decor *dec, int fd, void *mlx)
 {
 	char	*str;
 
-	ft_putendl_fd("Read Decor", 1);
 	str = get_next_line(fd);
 	while (str)
 	{
-		fill_decor(str, dec, mlx);
+		decor_fill(str, dec, mlx);
 		free(str);
 		if (dec->south && dec->north && dec->east && dec->west \
 			&& dec->set_ceiling && dec->set_floor)
@@ -46,17 +45,6 @@ int	read_decor(t_decor *dec, int fd, void *mlx)
 	}
 	return (dec->south && dec->north && dec->east && dec->west \
 			&& dec->set_ceiling && dec->set_floor);
-}
-
-void	free_decor(t_decor *decor, void *mlx)
-{
-	if (!decor)
-		return ;
-	free_buffer(decor->south, mlx);
-	free_buffer(decor->north, mlx);
-	free_buffer(decor->east, mlx);
-	free_buffer(decor->west, mlx);
-	free (decor);
 }
 
 void	decor_destroy(t_decor **decor, void *mlx)
