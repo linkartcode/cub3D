@@ -12,6 +12,32 @@
 
 #include "cub3D.h"
 
+// function only  for debug
+void	game_print(t_game *game)
+{
+	int	i;
+
+	ft_putendl_fd("Game.", 1);
+	ft_putendl_fd("Player:", 1);
+	ft_putstr_fd("X = ", 1);
+	ft_putnbr_fd((int)game->camera->pos_x, 1);
+	ft_putstr_fd(" , Y = ", 1);
+	ft_putnbr_fd((int)game->camera->pos_y, 1);
+	ft_putstr_fd("\nCeiling color = ", 1);
+	ft_putnbr_fd(game->decor->ceiling_color, 1);
+	ft_putstr_fd("\nFloor color = ", 1);
+	ft_putnbr_fd(game->decor->floor_color, 1);
+	ft_putendl_fd("\nMap.", 1);
+	ft_putstr_fd("width = ", 1);
+	ft_putnbr_fd(game->map_obj->width, 1);
+	ft_putstr_fd(" , height = ", 1);
+	ft_putnbr_fd(game->map_obj->height, 1);
+	ft_putchar_fd('\n', 1);
+	i = -1;
+	while (++i < game->map_obj->height)
+		ft_putendl_fd(game->map_obj->map[i], 1);
+}
+
 void	game_reset(t_game *game)
 {
 	game->mlx = NULL;
@@ -58,31 +84,6 @@ int	create_game(t_game *game)
 	return (FT_TRUE);
 }
 
-void	game_print(t_game *game)
-{
-	int	i;
-
-	ft_putendl_fd("Game.", 1);
-	ft_putendl_fd("Player:", 1);
-	ft_putstr_fd("X = ", 1);
-	ft_putnbr_fd((int)game->camera->pos_x, 1);
-	ft_putstr_fd(" , Y = ", 1);
-	ft_putnbr_fd((int)game->camera->pos_y, 1);
-	ft_putstr_fd("\nCeiling color = ", 1);
-	ft_putnbr_fd(game->decor->ceiling, 1);
-	ft_putstr_fd("\nFloor color = ", 1);
-	ft_putnbr_fd(game->decor->floor, 1);
-	ft_putendl_fd("\nMap.", 1);
-	ft_putstr_fd("width = ", 1);
-	ft_putnbr_fd(game->map_obj->width, 1);
-	ft_putstr_fd(" , height = ", 1);
-	ft_putnbr_fd(game->map_obj->height, 1);
-	ft_putchar_fd('\n', 1);
-	i = -1;
-	while (++i < game->map_obj->height)
-		ft_putendl_fd(game->map_obj->map[i], 1);
-}
-
 void	game_init(t_game *game, int fd)
 {
 	if (!create_game(game))
@@ -105,5 +106,4 @@ void	game_init(t_game *game, int fd)
 		game_over(game, "Start position error", 10, 0);
 	if (!map_check(game->map_obj))
 		game_over(game, NULL, 11, 0);
-	game_print(game);
 }

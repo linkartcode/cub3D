@@ -19,10 +19,10 @@ t_decor	*decor_init(void)
 	decor = malloc(sizeof(t_decor));
 	if (decor)
 	{
-		decor->south = NULL;
-		decor->north = NULL;
-		decor->east = NULL;
-		decor->west = NULL;
+		decor->south_wall_texture = NULL;
+		decor->north_wall_texture = NULL;
+		decor->east_wall_texture = NULL;
+		decor->west_wall_texture = NULL;
 		decor->set_ceiling = FT_FALSE;
 		decor->set_floor = FT_FALSE;
 	}
@@ -38,12 +38,14 @@ int	decor_read(t_decor *dec, int fd, void *mlx)
 	{
 		decor_fill(str, dec, mlx);
 		free(str);
-		if (dec->south && dec->north && dec->east && dec->west \
+		if (dec->south_wall_texture && dec->north_wall_texture \
+			&& dec->east_wall_texture && dec->west_wall_texture \
 			&& dec->set_ceiling && dec->set_floor)
 			break ;
 		str = get_next_line(fd);
 	}
-	return (dec->south && dec->north && dec->east && dec->west \
+	return (dec->south_wall_texture && dec->north_wall_texture \
+			&& dec->east_wall_texture && dec->west_wall_texture \
 			&& dec->set_ceiling && dec->set_floor);
 }
 
@@ -51,9 +53,9 @@ void	decor_destroy(t_decor **decor, void *mlx)
 {
 	if (!(*decor))
 		return ;
-	buffer_destroy(&(*decor)->south, mlx);
-	buffer_destroy(&(*decor)->north, mlx);
-	buffer_destroy(&(*decor)->west, mlx);
-	buffer_destroy(&(*decor)->east, mlx);
+	buffer_destroy(&(*decor)->south_wall_texture, mlx);
+	buffer_destroy(&(*decor)->north_wall_texture, mlx);
+	buffer_destroy(&(*decor)->west_wall_texture, mlx);
+	buffer_destroy(&(*decor)->east_wall_texture, mlx);
 	free (*decor);
 }

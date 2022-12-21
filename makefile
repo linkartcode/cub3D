@@ -1,10 +1,12 @@
 NAME		= cub3D
 NAME_B		= cub3D_bonus
 LIBFT 		= libft.a
+MINILIBX	= libmlx.a
 # PATHS
-LIBFT_PATH	= ./libft
-SRC_PATH	= ./src
-INCL_PATH	= ./incl
+LIBFT_PATH		= ./libft
+MINILIBX_PATH 	= ./minilibx
+SRC_PATH		= ./src
+INCL_PATH		= ./incl
 # SRCS
 SRCS		= 	$(SRC_PATH)/main.c		 $(SRC_PATH)/obj_game.c \
 				$(SRC_PATH)/game_move.c  $(SRC_PATH)/draw.c	\
@@ -30,11 +32,14 @@ MLX_LNK		= 	-lmlx -framework OpenGL -framework Appkit
 #
 all	:  $(NAME)
 #
-$(NAME)	: $(LIBFT_PATH)/$(LIBFT) $(OBJ)
-	$(CC) -L$(LIBFT_PATH) -lft $(MLX_LNK) -o $@ $(OBJ)
+$(NAME)	: $(LIBFT_PATH)/$(LIBFT) $(MINILIBX_PATH)/$(MINILIBX) $(OBJ)
+	$(CC) -L$(LIBFT_PATH) -lft -L$(MINILIBX_PATH) $(MLX_LNK) -o $@ $(OBJ)
 #
 $(LIBFT_PATH)/$(LIBFT) : force
 	$(MAKE) -C $(LIBFT_PATH)/
+#
+$(MINILIBX_PATH)/$(MINILIBX) : force
+	$(MAKE) -C $(MINILIBX_PATH)/
 #
 force : ;
 #
@@ -51,6 +56,7 @@ $(filter %.o,$(OBJ_B)): %.o: %.c $(HEADER_B)
 #
 clean :
 	$(MAKE) -C $(LIBFT_PATH)/ clean
+	$(MAKE) -C $(MINILIBX_PATH)/ clean
 	$(RM) $(OBJ) $(OBJ_B)
 #
 fclean	:	clean

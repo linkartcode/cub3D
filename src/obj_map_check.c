@@ -85,7 +85,6 @@ int	map_check(t_map *map)
 {
 	int	height;
 
-	ft_putendl_fd("Checking Map...", 1);
 	height = -1;
 	while (++height < map->height)
 		if (!is_str_valid("01 ", map->map[height]))

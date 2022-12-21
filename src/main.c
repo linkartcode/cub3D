@@ -73,7 +73,6 @@ int	main(int argc, char **argv)
 	if (fd == -1)
 		game_over(game, "File read error", 3, 0);
 	game_init(game, fd);
-	ft_putendl_fd("File OK", 1);
 	mlx_hook(game->win, 17, 0, close_win_hook, game);
 	mlx_key_hook(game->win, key_hook, game);
 	mlx_loop_hook(game->mlx, game_draw, game);

@@ -59,10 +59,10 @@ int	game_draw(t_game	*game)
 	rect.base.y = 0;
 	rect.w = WIN_W;
 	rect.h = WIN_H / 2 - 1;
-	buf_fill_rect(game->buffer, rect, game->decor->ceiling);
+	buf_fill_rect(game->buffer, rect, game->decor->ceiling_color);
 	rect.base.y = WIN_H / 2;
 	rect.h = WIN_H / 2 - 1;
-	buf_fill_rect(game->buffer, rect, game->decor->floor);
+	buf_fill_rect(game->buffer, rect, game->decor->floor_color);
 	x = -1;
 	while (++x < WIN_W)
 		game_draw_line(x, game);

@@ -14,7 +14,7 @@
 # define CUB3D_H
 
 # include "../libft/libft.h"
-# include <mlx.h>
+# include "../minilibx/mlx.h"
 # include <string.h>
 # include <stdio.h>
 # include <math.h>
@@ -87,13 +87,13 @@ typedef struct s_buffer
 // colors for ceiling and floor
 typedef struct s_decor
 {
-	t_buffer	*south;
-	t_buffer	*north;
-	t_buffer	*east;
-	t_buffer	*west;
-	int			ceiling;
+	t_buffer	*south_wall_texture;
+	t_buffer	*north_wall_texture;
+	t_buffer	*east_wall_texture;
+	t_buffer	*west_wall_texture;
+	int			ceiling_color;
+	int			floor_color;
 	int			set_ceiling;
-	int			floor;
 	int			set_floor;
 }	t_decor;
 
@@ -139,6 +139,8 @@ typedef struct s_map
 }	t_map;
 
 // main sruct contains almoust all previous
+// mlx - provides minilibx lib
+// win - support game window
 typedef struct s_game
 {
 	void		*mlx;
@@ -151,7 +153,7 @@ typedef struct s_game
 }	t_game;
 
 
-// defines functions
+// functions
 
 void			game_reset(t_game *game);
 void			game_init(t_game *game, int fd);

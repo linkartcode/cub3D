@@ -80,12 +80,12 @@ void	draw_line(int x, int length, char view, t_game *game)
 	t_buffer	*texture;
 
 	if (view == 'S')
-		texture = game->decor->south;
+		texture = game->decor->south_wall_texture;
 	else if (view == 'N')
-		texture = game->decor->north;
+		texture = game->decor->north_wall_texture;
 	else if (view == 'W')
-		texture = game->decor->west;
+		texture = game->decor->west_wall_texture;
 	else
-		texture = game->decor->east;
+		texture = game->decor->east_wall_texture;
 	draw_vert_tex(x, length, texture, game);
 }

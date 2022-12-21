@@ -63,22 +63,22 @@ static int	ft_pars_color(char type, char *str, t_decor *decor)
 	if (r > 255 || g > 255 || b > 255)
 		return (FT_FALSE);
 	if (type == 'F')
-		decor->floor = (r << 16 | g << 8 | b);
+		decor->floor_color = (r << 16 | g << 8 | b);
 	else
-		decor->ceiling = (r << 16 | g << 8 | b);
+		decor->ceiling_color = (r << 16 | g << 8 | b);
 	return (FT_TRUE);
 }
 
 static void	fill_texture(char type, char *str, t_decor *decor, void *mlx)
 {
-	if (type == 'S' && !(decor->south))
-		decor->south = buffer_init(mlx, 0, 0, str);
-	else if (type == 'N' && !(decor->north))
-		decor->north = buffer_init(mlx, 0, 0, str);
-	else if (type == 'E' && !(decor->east))
-		decor->east = buffer_init(mlx, 0, 0, str);
-	else if (type == 'W' && !(decor->west))
-		decor->west = buffer_init(mlx, 0, 0, str);
+	if (type == 'S' && !(decor->south_wall_texture))
+		decor->south_wall_texture = buffer_init(mlx, 0, 0, str);
+	else if (type == 'N' && !(decor->north_wall_texture))
+		decor->north_wall_texture = buffer_init(mlx, 0, 0, str);
+	else if (type == 'E' && !(decor->east_wall_texture))
+		decor->east_wall_texture = buffer_init(mlx, 0, 0, str);
+	else if (type == 'W' && !(decor->west_wall_texture))
+		decor->west_wall_texture = buffer_init(mlx, 0, 0, str);
 }
 
 void	decor_fill(char *str, t_decor *decor, void *mlx)
