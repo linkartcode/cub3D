@@ -1,17 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   game_move.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/10 13:55:42 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/13 10:54:53 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// some move functions
 #include "cub3D.h"
 
+// turn camera to angle
 static void	rotate(t_camera *cam, double angle)
 {
 	double	old_dir_x;
@@ -25,6 +15,7 @@ static void	rotate(t_camera *cam, double angle)
 	cam->plane_y = old_plane_x * sin(angle) + cam->plane_y * cos(angle);
 }
 
+// checks space for empty and moves in dir x, dir y direction if it clear
 static void	move(t_game *game, double dir_x, double dir_y, double speed)
 {
 	t_camera	*cam;
@@ -42,6 +33,7 @@ static void	move(t_game *game, double dir_x, double dir_y, double speed)
 		cam->pos_y += dir_y * speed;
 }
 
+// moves according the keys
 int	game_move(int key, t_game *game)
 {
 	t_camera	*cam;

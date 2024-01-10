@@ -1,17 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   game_draw.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/10 13:17:19 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/12 13:05:28 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// low level functions to draw graphics
 #include "cub3D.h"
 
+// returns color of pixel x.y
 static unsigned int	buf_get_pixel(t_buffer *buff, int x, int y)
 {
 	unsigned int	color;
@@ -22,6 +12,7 @@ static unsigned int	buf_get_pixel(t_buffer *buff, int x, int y)
 	return (color);
 }
 
+// set pixel x,y to color
 void	put_pixel(t_buffer *buffer, int x, int y, int color)
 {
 	char	*dest;
@@ -49,6 +40,7 @@ static void	set_dda_tex(t_game *game, t_buffer *tex)
 		dda->texx = tex->w - dda->texx - 1;
 }
 
+// draw vert line of texture
 static void	draw_vert_tex(int x, int length, t_buffer *tex, t_game *game)
 {
 	int				start;
@@ -75,6 +67,7 @@ static void	draw_vert_tex(int x, int length, t_buffer *tex, t_game *game)
 	}
 }
 
+// select texture and draw according line
 void	draw_line(int x, int length, char view, t_game *game)
 {
 	t_buffer	*texture;

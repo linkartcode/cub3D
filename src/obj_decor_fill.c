@@ -1,17 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   obj_decor_read.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/11 21:54:02 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/11 22:14:38 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// functions for fill decor struct
 #include "cub3D.h"
 
+// frees color arr
 static int	clear_arr(char **color_arr)
 {
 	int	i;
@@ -26,6 +16,7 @@ static int	clear_arr(char **color_arr)
 	return (FT_FALSE);
 }
 
+// checks code of color
 static int	check_arr(char	**color_arr)
 {
 	int	i;
@@ -44,6 +35,7 @@ static int	check_arr(char	**color_arr)
 	return (FT_TRUE);
 }
 
+// parsers colors of floor and ceiling
 static int	ft_pars_color(char type, char *str, t_decor *decor)
 {
 	char	**color_arr;
@@ -69,6 +61,7 @@ static int	ft_pars_color(char type, char *str, t_decor *decor)
 	return (FT_TRUE);
 }
 
+// fills textures of decor
 static void	fill_texture(char type, char *str, t_decor *decor, void *mlx)
 {
 	if (type == 'S' && !(decor->south_wall_texture))
@@ -81,6 +74,7 @@ static void	fill_texture(char type, char *str, t_decor *decor, void *mlx)
 		decor->west_wall_texture = buffer_init(mlx, 0, 0, str);
 }
 
+// analises str and fill fields of decor
 void	decor_fill(char *str, t_decor *decor, void *mlx)
 {
 	int		i;

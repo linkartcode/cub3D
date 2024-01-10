@@ -1,0 +1,5 @@
+*.o
+.DS_Store
+.vscode
+*.a
+cub3D

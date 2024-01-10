@@ -1,15 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/09 21:19:48 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/14 13:40:51 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// main header file
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -23,23 +12,25 @@
 //difines player's face direction 
 # define SYM_WEST		'W'
 # define SYM_EAST		'E'
-# define SYM_SOUTH		'S'
-# define SYM_NORTH		'N'
+# define SYM_SOUTH	'S'
+# define SYM_NORTH	'N'
 
 // Defines symbols of map
 # define SYM_WALL		'1'
-# define SYM_EMPTY		'0'
-# define SYM_SPACE		' '
+# define SYM_EMPTY	'0'
+# define SYM_SPACE	' '
 
 // keyboard definitions
 // keys for moves
-# define KEY_UP			13
+# define KEY_UP		13
 # define KEY_DOWN		1
 # define KEY_LEFT		0
-# define KEY_RIGHT		2
+# define KEY_RIGHT	2
+
 // keys for turns to left / right
-# define KEY_LVIEW		123
-# define KEY_RVIEW		124
+# define KEY_LVIEW	123
+# define KEY_RVIEW	124
+
 // key for exit
 # define KEY_ESC		53
 
@@ -48,13 +39,12 @@
 # define WIN_H			768
 
 // defines for calculation of moving 
-# define ANGLE			0.66
+# define ANGLE			0.66		// angle of view
 # define ANG			1.5708
-# define MOVE_SPEED		0.15
-# define ROT_SPEED		0.06
+# define MOVE_SPEED	0.15
+# define ROT_SPEED	0.06
 
 // defines types
-
 // just simple int position
 typedef struct s_point
 {
@@ -75,11 +65,11 @@ typedef struct s_buffer
 {
 	void	*data;
 	char	*addr;
-	int		w;
-	int		h;
-	int		size_line;
-	int		bits_per_pixel;
-	int		endian;
+	int	w;
+	int	h;
+	int	size_line;
+	int	bits_per_pixel;
+	int	endian;
 }	t_buffer;
 
 // struct contains textures for wall 
@@ -91,10 +81,10 @@ typedef struct s_decor
 	t_buffer	*north_wall_texture;
 	t_buffer	*east_wall_texture;
 	t_buffer	*west_wall_texture;
-	int			ceiling_color;
-	int			floor_color;
-	int			set_ceiling;
-	int			set_floor;
+	int		ceiling_color;
+	int		floor_color;
+	int		set_ceiling;
+	int		set_floor;
 }	t_decor;
 
 // struct for view calculations
@@ -133,9 +123,9 @@ typedef struct s_dda
 // just map
 typedef struct s_map
 {
-	int			width;
-	int			height;
-	char		**map;
+	int	width;
+	int	height;
+	char	**map;
 }	t_map;
 
 // main sruct contains almoust all previous
@@ -148,36 +138,34 @@ typedef struct s_game
 	t_camera	*camera;
 	t_buffer	*buffer;
 	t_dda		*dda;
-	t_decor		*decor;
+	t_decor	*decor;
 	t_map		*map_obj;
 }	t_game;
 
-
 // functions
 
-void			game_reset(t_game *game);
-void			game_init(t_game *game, int fd);
-int				game_move(int key, t_game *game);
-void			game_draw_line(int x, t_game *game);
-int				game_draw(t_game *game);
-void			game_over(t_game *game, char *err_mess, int code, int fd);
-void			game_destroy(t_game **game);
+//void	game_char_print(t_game *game); //debug function
+void		game_init(t_game *game, int fd);
+int		game_move(int key, t_game *game);
+void		game_draw_line(int x, t_game *game);
+int		game_draw(t_game *game);
+void		game_over(t_game *game, char *err_mess, int code, int fd);
 
-t_decor			*decor_init(void);
-void			decor_fill(char *str, t_decor *decor, void *mlx);
-int				decor_read(t_decor *decor, int fd, void *mlx);
-void			decor_destroy(t_decor **decor, void *mlx);
+t_decor	*decor_init(void);
+void		decor_fill(char *str, t_decor *decor, void *mlx);
+int		decor_read(t_decor *decor, int fd, void *mlx);
+void		decor_destroy(t_decor **decor, void *mlx);
 
-int				camera_create(t_game *game);
+int		camera_create(t_game *game);
 
-int				map_create(t_map *map, int fd);
-int				map_check(t_map *map);
-void			map_destroy(t_map **map);
+int		map_create(t_map *map, int fd);
+int		map_check(t_map *map);
+void		map_destroy(t_map **map);
 
-t_buffer		*buffer_init(void *mlx, int width, int height, char *path);
-void			buffer_destroy(t_buffer **buffer, void *mlx);
+t_buffer	*buffer_init(void *mlx, int width, int height, char *path);
+void		buffer_destroy(t_buffer **buffer, void *mlx);
 
-void			put_pixel(t_buffer *buffer, int x, int y, int color);
-void			draw_line(int x, int length, char view, t_game *game);
+void		put_pixel(t_buffer *buffer, int x, int y, int color);
+void		draw_line(int x, int length, char view, t_game *game);
 
 #endif

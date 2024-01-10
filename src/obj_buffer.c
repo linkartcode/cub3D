@@ -1,17 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   obj_buffer.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/13 10:17:10 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/13 13:10:28 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// functions for init and destroyed screen buffer
 #include "cub3D.h"
 
+// skips start spaces and return position of the first path symbol
 static int	check_path(char *path)
 {
 	int			i;
@@ -28,6 +18,7 @@ static int	check_path(char *path)
 	return (i);
 }
 
+// init buffer of texture width x height from path
 t_buffer	*buffer_init(void *mlx, int width, int height, char *path)
 {
 	t_buffer	*res;
@@ -57,6 +48,7 @@ t_buffer	*buffer_init(void *mlx, int width, int height, char *path)
 	return (res);
 }
 
+//destroyes buffer
 void	buffer_destroy(t_buffer **buffer, void *mlx)
 {
 	if (!(*buffer))

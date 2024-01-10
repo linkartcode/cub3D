@@ -1,50 +1,25 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   obj_map_check.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/12 13:49:15 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/14 10:34:19 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// some functions to check map
 #include "cub3D.h"
 
-static int	print_message(char *str)
+// checks one row of the map for invalid symbols
+static int	is_str_valid(char *checked_str)
 {
-	ft_putendl_fd(str, 1);
-	return (FT_FALSE);
-}
-
-static int	is_str_valid(char *symbols, char *checked_str)
-{
+	char	ch;
 	int	i;
-	int	j;
-	int	find_flag;
 
-	find_flag = FT_FALSE;
 	i = -1;
 	while (checked_str[++i])
 	{
-		j = -1;
-		while (symbols[++j])
-		{
-			if (symbols[j] == checked_str[i])
-			{
-				find_flag = FT_TRUE;
-				break ;
-			}
-		}
-		if (!find_flag)
-			return (find_flag);
-		find_flag = FT_FALSE;
+		ch = checked_str[i];
+		if (!(ch == SYM_WALL || ch == SYM_EMPTY || ch == SYM_SPACE))
+			return (FT_FALSE);
 	}
 	return (FT_TRUE);
 }
 
-static int	next_space(int px, int py, t_map *map)
+// checks position next to px, py for empty space
+// returns true if there is empty space, and false if not
+static int	is_space_next(int px, int py, t_map *map)
 {
 	int	x;
 	int	y;
@@ -63,6 +38,7 @@ static int	next_space(int px, int py, t_map *map)
 	return (FT_FALSE);
 }
 
+// cheks map for closed or not
 static int	check_closed(t_map *map)
 {
 	int	x;
@@ -74,22 +50,34 @@ static int	check_closed(t_map *map)
 		x = -1;
 		while (++x < map->width)
 		{
-			if (map->map[y][x] == SYM_EMPTY && next_space(x, y, map))
+			if (map->map[y][x] == SYM_EMPTY && is_space_next(x, y, map))
 				return (FT_FALSE);
 		}
 	}
 	return (FT_TRUE);
 }
 
+// check map for invalid symbols and closed
 int	map_check(t_map *map)
 {
 	int	height;
+	int	is_valid;
 
+	is_valid = FT_TRUE;
 	height = -1;
 	while (++height < map->height)
-		if (!is_str_valid("01 ", map->map[height]))
-			return (print_message("Error! Invalid symbols on map!"));
-	if (!check_closed(map))
-		return (print_message("Error! The map is not closed!"));
-	return (FT_TRUE);
+	{
+		if (!is_str_valid(map->map[height]))
+		{
+			ft_putendl_fd("Error! Invalid symbols on map!", 1);
+			is_valid = FT_FALSE;
+			break ;
+		}
+	}
+	if (is_valid && !check_closed(map))
+	{
+		ft_putendl_fd("Error! The map is not closed!", 1);
+		is_valid = FT_FALSE;
+	}
+	return (is_valid);
 }

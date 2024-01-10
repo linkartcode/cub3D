@@ -1,17 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   obj_camera.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/05 20:29:02 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/13 10:21:09 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// camera functions
 #include "cub3D.h"
 
+// set camera directions and planes according the start position
 static void	set_angle(t_camera *cam, char view)
 {
 	if (view == 'N')
@@ -36,6 +26,7 @@ static void	set_angle(t_camera *cam, char view)
 	}
 }
 
+// sets all camera properties
 static void	camera_init(t_camera *camera, int x, int y, char view)
 {
 	camera->pos_x = (double) x;
@@ -48,14 +39,15 @@ static void	camera_init(t_camera *camera, int x, int y, char view)
 	set_angle(camera, view);
 }
 
+// analises the map and init camera, if find start point
+// start point: W - looks at west, E - at east, S - south, N - north
+// return true if success, false if not
 int	camera_create(t_game *game)
 {
 	int		x;
 	int		y;
 	char	ch;
 
-	if (!game->map_obj)
-		return (FT_FALSE);
 	y = -1;
 	while (++y < game->map_obj->height)
 	{

@@ -1,17 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   obj_map.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/09 23:02:54 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/14 08:27:48 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// functions for init, read and destroy map struct
 #include "cub3D.h"
 
+// checks str for empty
 static int	str_empty(char *str)
 {
 	size_t	i;
@@ -24,6 +14,8 @@ static int	str_empty(char *str)
 	return (FT_FALSE);
 }
 
+// skips all empty strings
+// returns first not empty string
 static char	*skip_empty(int fd)
 {
 	char	*str;
@@ -34,11 +26,11 @@ static char	*skip_empty(int fd)
 		free(str);
 		str = get_next_line(fd);
 	}
-	if (!str)
-		return (NULL);
 	return (str);
 }
 
+// transforms any map to rectangle
+// fills nessesary places with SYM_SPACE 
 static int	map_fill(t_map *map)
 {
 	char	*str;
@@ -64,6 +56,9 @@ static int	map_fill(t_map *map)
 	return (FT_TRUE);
 }
 
+// reads map from mapfile
+// return true and rectangle map with high and width
+// or false if error
 int	map_create(t_map *map, int fd)
 {
 	char	*str;
@@ -93,6 +88,7 @@ int	map_create(t_map *map, int fd)
 	return (map_fill(map));
 }
 
+// fees all memory from map struct
 void	map_destroy(t_map **map)
 {
 	int	y;

@@ -1,17 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   obj_buffer_draw.c                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/08 00:18:10 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/12 13:13:20 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// main draw functions of the game
 #include "cub3D.h"
 
+// fills all screen buffer by color
 static void	buf_clear(t_buffer *buffer, int color)
 {
 	int	x;
@@ -26,6 +16,7 @@ static void	buf_clear(t_buffer *buffer, int color)
 	}
 }
 
+// fills rect by the color
 static void	buf_fill_rect(t_buffer *buffer, t_rect rect, int color)
 {
 	int	x;
@@ -48,6 +39,7 @@ static void	buf_fill_rect(t_buffer *buffer, t_rect rect, int color)
 	}
 }
 
+// output ceiling, floor and walls on screen
 int	game_draw(t_game	*game)
 {
 	int		x;
@@ -68,4 +60,30 @@ int	game_draw(t_game	*game)
 		game_draw_line(x, game);
 	mlx_put_image_to_window(game->mlx, game->win, game->buffer->data, 0, 0);
 	return (0);
+}
+
+// prints game on consol in chars - debugging helper
+void	game_char_print(t_game *game)
+{
+	int	i;
+
+	ft_putendl_fd("Game.", 1);
+	ft_putendl_fd("Player:", 1);
+	ft_putstr_fd("X = ", 1);
+	ft_putnbr_fd((int)game->camera->pos_x, 1);
+	ft_putstr_fd(" , Y = ", 1);
+	ft_putnbr_fd((int)game->camera->pos_y, 1);
+	ft_putstr_fd("\nCeiling color = ", 1);
+	ft_putnbr_fd(game->decor->ceiling_color, 1);
+	ft_putstr_fd("\nFloor color = ", 1);
+	ft_putnbr_fd(game->decor->floor_color, 1);
+	ft_putendl_fd("\nMap.", 1);
+	ft_putstr_fd("width = ", 1);
+	ft_putnbr_fd(game->map_obj->width, 1);
+	ft_putstr_fd(" , height = ", 1);
+	ft_putnbr_fd(game->map_obj->height, 1);
+	ft_putchar_fd('\n', 1);
+	i = -1;
+	while (++i < game->map_obj->height)
+		ft_putendl_fd(game->map_obj->map[i], 1);
 }

@@ -1,15 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   dda.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/10 07:40:59 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/07/12 11:23:45 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// realises dda algorithm to draw vertical line of game world
 #include "cub3D.h"
 
 static char	get_hit_view(int side, int step_x, int step_y)

@@ -1,55 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   obj_game.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/09 21:19:48 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/15 08:18:50 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// full circle game struct
 #include "cub3D.h"
 
-// function only  for debug
-void	game_print(t_game *game)
-{
-	int	i;
-
-	ft_putendl_fd("Game.", 1);
-	ft_putendl_fd("Player:", 1);
-	ft_putstr_fd("X = ", 1);
-	ft_putnbr_fd((int)game->camera->pos_x, 1);
-	ft_putstr_fd(" , Y = ", 1);
-	ft_putnbr_fd((int)game->camera->pos_y, 1);
-	ft_putstr_fd("\nCeiling color = ", 1);
-	ft_putnbr_fd(game->decor->ceiling_color, 1);
-	ft_putstr_fd("\nFloor color = ", 1);
-	ft_putnbr_fd(game->decor->floor_color, 1);
-	ft_putendl_fd("\nMap.", 1);
-	ft_putstr_fd("width = ", 1);
-	ft_putnbr_fd(game->map_obj->width, 1);
-	ft_putstr_fd(" , height = ", 1);
-	ft_putnbr_fd(game->map_obj->height, 1);
-	ft_putchar_fd('\n', 1);
-	i = -1;
-	while (++i < game->map_obj->height)
-		ft_putendl_fd(game->map_obj->map[i], 1);
-}
-
-void	game_reset(t_game *game)
-{
-	game->mlx = NULL;
-	game->win = NULL;
-	game->camera = NULL;
-	game->buffer = NULL;
-	game->dda = NULL;
-	game->decor = NULL;
-	game->map_obj = NULL;
-}
-
-void	game_destroy(t_game **game)
+// frees all memory allocated for game and it's parts
+static void	game_destroy(t_game **game)
 {
 	if (!(*game))
 		return ;
@@ -67,8 +20,37 @@ void	game_destroy(t_game **game)
 	free(*game);
 }
 
+// Exit game :
+// 1 - Destroy game struct
+// 2 - Close fd file descripter
+// 3 - Print err_mess
+// 4 - Exit with code
+void	game_over(t_game *game, char *err_mess, int code, int fd)
+{
+	game_destroy(&game);
+	if (fd > 0)
+		close (fd);
+	if (err_mess)
+		ft_putendl_fd(err_mess, 1);
+	exit(code);
+}
+
+// set to NULL all fields
+static void	game_set_null(t_game *game)
+{
+	game->mlx = NULL;
+	game->win = NULL;
+	game->camera = NULL;
+	game->buffer = NULL;
+	game->dda = NULL;
+	game->decor = NULL;
+	game->map_obj = NULL;
+}
+
+// allocates memory for all complicated parts of game
 int	create_game(t_game *game)
 {
+	game_set_null(game);
 	game->dda = malloc(sizeof(t_dda));
 	if (!(game->dda))
 		return (FT_FALSE);
@@ -84,6 +66,7 @@ int	create_game(t_game *game)
 	return (FT_TRUE);
 }
 
+// inits game and handles all errors
 void	game_init(t_game *game, int fd)
 {
 	if (!create_game(game))

@@ -1,17 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   obj_decor.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nmordeka <nmordeka@student.21-school.ru    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/11 21:07:35 by nmordeka          #+#    #+#             */
-/*   Updated: 2022/09/13 13:10:47 by nmordeka         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+// create init read and destroy decor struct
 #include "cub3D.h"
 
+// create decor struct and set it to start state
+// return decor struct or null if error malloc
 t_decor	*decor_init(void)
 {
 	t_decor	*decor;
@@ -29,6 +20,16 @@ t_decor	*decor_init(void)
 	return (decor);
 }
 
+// checks decor struct for full complete
+static int	check_decor(t_decor *dec)
+{
+	return (dec->south_wall_texture && dec->north_wall_texture \
+			&& dec->east_wall_texture && dec->west_wall_texture \
+			&& dec->set_ceiling && dec->set_floor);
+}
+
+// read mapfile and fill decor fields
+// return true if full fill and false if not
 int	decor_read(t_decor *dec, int fd, void *mlx)
 {
 	char	*str;
@@ -38,20 +39,17 @@ int	decor_read(t_decor *dec, int fd, void *mlx)
 	{
 		decor_fill(str, dec, mlx);
 		free(str);
-		if (dec->south_wall_texture && dec->north_wall_texture \
-			&& dec->east_wall_texture && dec->west_wall_texture \
-			&& dec->set_ceiling && dec->set_floor)
+		if (check_decor(dec))
 			break ;
 		str = get_next_line(fd);
 	}
-	return (dec->south_wall_texture && dec->north_wall_texture \
-			&& dec->east_wall_texture && dec->west_wall_texture \
-			&& dec->set_ceiling && dec->set_floor);
+	return (check_decor(dec));
 }
 
+// destroys decor struct
 void	decor_destroy(t_decor **decor, void *mlx)
 {
-	if (!(*decor))
+	if (!decor)
 		return ;
 	buffer_destroy(&(*decor)->south_wall_texture, mlx);
 	buffer_destroy(&(*decor)->north_wall_texture, mlx);
