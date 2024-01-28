@@ -1,4 +1,4 @@
-//
+// v 2.1 (c)2024
 #include "cub3D.h"
 
 // checks for cub extention 
